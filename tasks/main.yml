@@ -10,3 +10,11 @@
 - name: "Install"
   apt: name="google-chrome-stable" update_cache=yes state=latest
   become: yes
+
+- include: preferences.yml
+  vars:
+    google_chrome_user: root
+    google_chrome_preferences: "{{ google_chrome_global_preferences }}"
+    google_chrome_preferences_file: "{{ google_chrome_global_preference_file }}"
+    google_chrome_merge_preferences: no
+    google_chrome_bookmarks_file_source: "{{ google_chrome_global_bookmarks_file_source | default(False) }}"

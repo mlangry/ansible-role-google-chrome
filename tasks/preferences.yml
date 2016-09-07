@@ -1,0 +1,39 @@
+- stat: path="{{ google_chrome_preferences_file }}"
+  register: google_chrome_preferences_file_stat
+  become_user: "{{ google_chrome_user }}"
+  become: yes
+
+- name: Get current preferences
+  command: "cat '{{ google_chrome_preferences_file }}'"
+  register: google_chrome_current_preferences
+  when: google_chrome_preferences_file_stat.stat.exists and google_chrome_merge_preferences
+  changed_when: False
+  become_user: "{{ google_chrome_user }}"
+  become: yes
+
+
+- name: Create preferences directory
+  file: path="{{ google_chrome_preferences_file |dirname }}" state=directory recurse=yes
+  become_user: "{{ google_chrome_user }}"
+  become: yes
+
+- set_fact:
+    google_chrome_preferences: "{{ google_chrome_current_preferences.stdout | default('{}') | from_json | combine( google_chrome_preferences, recursive=True ) }}"
+
+- name: Set preferences
+  copy:
+    content: "{{ google_chrome_preferences | to_json }}"
+    dest: "{{ google_chrome_preferences_file }}"
+    backup: yes
+  become_user: "{{ google_chrome_user }}"
+  become: yes
+
+
+- name: copy bookmarks file
+  copy:
+    src: "{{ google_chrome_bookmarks_file_source }}"
+    dest: "{{ google_chrome_preferences.distribution.import_bookmarks_from_file }}"
+    mode: 0644
+  when: google_chrome_bookmarks_file_source is defined and google_chrome_bookmarks_file_source != False and google_chrome_preferences.distribution is defined and google_chrome_preferences.distribution.import_bookmarks_from_file is defined
+  become_user: "{{ google_chrome_user }}"
+  become: yes
