@@ -1,0 +1,19 @@
+galaxy_info:
+  author: mlangry
+  description: An ansible role to install and configure google-chrome
+  license:
+    - MIT
+
+  min_ansible_version: 2.0
+
+  platforms:
+    - name: Ubuntu
+
+  galaxy_tags:
+    - desktop
+    - browser
+    - chrome
+    - google
+    - google chrome
+
+dependencies: []
