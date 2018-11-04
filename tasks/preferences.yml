@@ -29,9 +29,9 @@
   become: yes
 
 - name: Create extensions directory
-    file: path="{{ google_chrome_extensions_file |dirname }}" state=directory recurse=yes
-    become_user: "{{ google_chrome_user }}"
-    become: yes
+  file: path="{{ google_chrome_extensions_file |dirname }}" state=directory recurse=yes
+  become_user: "{{ google_chrome_user }}"
+  become: yes
 
 - name: Set default extensions
   copy:
