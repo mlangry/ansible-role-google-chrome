@@ -1,2 +1,4 @@
 ---
 google_chrome_global_preferences: {}
+google_chrome_global_extensions_file: "/opt/google/chrome/extensions/external_extensions.json"
+google_chrome_global_extensions: {}
