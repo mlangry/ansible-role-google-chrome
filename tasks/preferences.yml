@@ -28,20 +28,6 @@
   become_user: "{{ google_chrome_user }}"
   become: yes
 
-- name: Create extensions directory
-  file: path="{{ google_chrome_extensions_file |dirname }}" state=directory recurse=yes
-  become_user: "{{ google_chrome_user }}"
-  become: yes
-
-- name: Set default extensions
-  copy:
-    content: "{{ google_chrome_extensions | to_json }}"
-    dest: "{{ google_chrome_extensions_file }}"
-    mode: 0644
-    backup: yes
-  become_user: "{{ google_chrome_user }}"
-  become: yes
-
 - name: copy bookmarks file
   copy:
     src: "{{ google_chrome_bookmarks_file_source }}"
